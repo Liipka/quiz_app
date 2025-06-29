@@ -5,11 +5,7 @@ const GameScreen = ({quizQuestions, changeMode}) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
 
     const currentQuestion = quizQuestions[currentQuestionIndex];
-    let timeLeft=30
-    
 
-
-    console.log(currentQuestionIndex, quizQuestions.length)
     const shuffledAnswers = (currentQuestion) => {
         const allAnswers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers]
         return allAnswers.sort(() => Math.random() - 0.5);

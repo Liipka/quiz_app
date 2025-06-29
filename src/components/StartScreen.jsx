@@ -4,6 +4,7 @@ import brainImage from '../assets/brain.png';
 
 const StartScreen = ({changeMode, setQuizQuestions}) => {
   const [questions, setQuestions] = useState();
+  const [hasError, setHasError] = useState(false);
   const [quizSettings, setQuizSettings] = useState({
     amount: 5,
     category: 9,
@@ -14,15 +15,24 @@ const StartScreen = ({changeMode, setQuizQuestions}) => {
   const getData = (e) => {
     e.preventDefault();
     fetch(
-      `https://opentdb.com/api.php?amount=${quizSettings.amount}&category=${quizSettings.category}&difficulty=${quizSettings.difficulty}&type=${quizSettings.type}`
+      `https://opentdb.com/api.php?axmount=${quizSettings.amount}&category=${quizSettings.category}&difficulty=${quizSettings.difficulty}&type=${quizSettings.type}`
     )
-      .then((res) => res.json())
+      .then((res) => {
+        console.log(res)
+        if(!res.ok) throw new Error("error fetching data")
+        return res.json()
+      })
       .then((data) => {
+        console.log(data)
+        if (!data.results || data.results.length === 0) throw new Error("No questions available")
         setQuizQuestions(data.results)
         changeMode('playing')
+    }).catch((e) => {
+      console.log(e)
+      changeMode('error')
     });
-    
 };
+
 
 
   const handleInputChange = (e) => {
