@@ -1,10 +1,18 @@
+:root {
+    --main-bg-color: #9bb48b;
+    --secondary-bg-color: #cae2bc;
+    --input-bg-color: #c7ccb9;
+    --bg-white: #fff;
+    /* --secondary-bg-color: #c7ccb9; */
+}
+
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     flex-direction: column;
-    background-color: #9bb48b;
+    background-color: var(--main-bg-color);
     overflow: scroll;
     /* position: absolute; */
 }
@@ -13,7 +21,7 @@
 }
 
 .form-container {
-    background-color: #cae2bc;
+    background-color: var(--secondary-bg-color);
     display: flex;
     flex-direction: column;
     margin-top: 30px;
@@ -26,7 +34,7 @@
 
 }
 .option {
-    background-color: #c7ccb9;
+    background-color: var(--input-bg-color);
     margin-left: 5px;
     border: 1px solid black;
 }
@@ -34,7 +42,7 @@
 .form-btn {
     margin: 0 auto;
     width: 90px;
-    background-color: #c7ccb9;
+    background-color: var(--input-bg-color);
     border: 1px solid black;
     cursor: pointer;
 }
@@ -50,7 +58,7 @@
 }
 
 .question-box {
-    background-color: white;
+    background-color: var(--bg-white);
     border-radius: 5px;
     padding: 50px 50px;
     margin-bottom: 25px;
@@ -59,7 +67,7 @@
 .answers-box {
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background-color: var(--bg-white);
     border-radius: 5px;
     padding: 15px 15px;
 }
@@ -67,17 +75,17 @@
 .question-answer {
     display: flex;
     justify-content: space-between;
-    background-color: #cae2bc;
+    background-color: var(--secondary-bg-color);
     border-radius: 3px;
     margin: 10px 0;
     padding: 10px 15px;
 }
 .question-answer:hover {
-    background-color: #a7bb9c;
+    background-color: var(--input-bg-color);
 }
 
 .question-answer:has(.answer-checkbox:checked) {
-    background-color: #a7bb9c;
+    background-color: var(--input-bg-color);
 }
 
 .navigation-buttons {
@@ -88,7 +96,7 @@
     width: 100%;
 }
 .navigation-btn {
-    background-color: #cae2bc;
+    background-color: var(--input-bg-color);
     border-radius: 3px;
     border: 1px solid black;
     cursor: pointer;
@@ -110,7 +118,7 @@
     margin-left: auto;
 }
 .exit-btn {
-    background-color: grey;
+    background-color: var(--input-bg-color);
 }
 
 .loader-container {
@@ -125,7 +133,7 @@
     border-radius: 50%;
     position: relative;
     transform:rotate(45deg);
-    background: #fff;
+    background: var(--bg-white)
   }
 .loader-container::before {
     content: "";
@@ -134,7 +142,7 @@
     inset: 0px;
     border-radius: 50%;
     border:24px solid #a7bb9c;
-    animation: prixClipFix 5s infinite linear;
+    animation: prixClipFix 30s infinite linear;
 }
 
 @keyframes prixClipFix {
@@ -153,7 +161,7 @@
     margin: 2px;
     width: 40px;
     height: 40px;
-    background-color: white;
+    background-color: var(--bg-white);
     border-radius: 50%;
     z-index: 2;
     font-size: 35px;

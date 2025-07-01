@@ -1,15 +1,25 @@
-import { use, useState } from "react"
+import { use, useEffect, useState } from "react"
 import Timer from "./Timer";
 
 const GameScreen = ({quizQuestions, changeMode}) => {
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [selectedAnswer, setSelectedAnswer] = useState(null);
+    const [shuffledAnswers, setShuffledAnswers] = useState()
 
     const currentQuestion = quizQuestions[currentQuestionIndex];
 
-    const shuffledAnswers = (currentQuestion) => {
-        const allAnswers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers]
-        return allAnswers.sort(() => Math.random() - 0.5);
-    }
+  const shuffleAnswers = (currentQuestion) => {
+    const allAnswers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers]
+    return allAnswers.sort(() => Math.random() - 0.5);
+}
+
+useEffect(() => {
+  if (currentQuestion) {
+    const shuffled = shuffleAnswers(currentQuestion);
+    setShuffledAnswers(shuffled);
+  }
+}, [currentQuestionIndex]);
+   
 
     const decodeHtmlEntities = (str) => {
         const parser = new DOMParser();
@@ -26,6 +36,7 @@ const GameScreen = ({quizQuestions, changeMode}) => {
       const changeToNextQuestion = () => {
         if (currentQuestionIndex < quizQuestions.length - 1) {
           setCurrentQuestionIndex((prev) => prev + 1);
+          setSelectedAnswer(null);
         }
       };
 
@@ -33,13 +44,15 @@ const GameScreen = ({quizQuestions, changeMode}) => {
         changeToNextQuestion()
       }
 
+      if (!shuffledAnswers) return <div>Loading...</div>;
+
   return (
     <div className="container">
         
         <div className='question-container'>
             <div className="loader-container" key={currentQuestionIndex}>
                 <div className="counter"><span>
-                    <Timer key={currentQuestionIndex} duration={5} onTimeEnd={handleTimerEnd}/>
+                    <Timer key={currentQuestionIndex} duration={30} onTimeEnd={handleTimerEnd} questionIndex={currentQuestionIndex}/>
                     </span></div>
             </div>
             <div className="question-box">
@@ -47,11 +60,22 @@ const GameScreen = ({quizQuestions, changeMode}) => {
                     {decodeHtmlEntities(currentQuestion.question)}
                 </p>
             </div>
-            
+          
             <div className="answers-box">
-                {shuffledAnswers(currentQuestion).map((answer, i) => <label key={i} className="question-answer">{decodeHtmlEntities(answer)}
-                <input type="radio" name="group" className="answer-checkbox"/></label>)}
-            </div>
+                {shuffledAnswers.map((answer, i) => (
+                  <label key={i} className="question-answer">
+                    {decodeHtmlEntities(answer)}
+                    <input 
+                    type="radio" 
+                    name="group"
+                    value={answer}
+                    checked={selectedAnswer === answer}
+                    onChange={() => setSelectedAnswer(answer)} 
+                    className="answer-checkbox"/>
+                  </label>
+                ))
+                }
+            </div> 
             <div className="navigation-buttons">
                 {/* {currentQuestionIndex > 0 ? <button className="btn-prev navigation-btn" onClick={changeToPrevQuestion}>previous</button> : <button className="btn-prev transparent-btn">previous</button>} */}
                 <button className="btn-prev transparent-btn">previous</button>

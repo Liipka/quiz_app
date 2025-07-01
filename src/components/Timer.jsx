@@ -17,7 +17,7 @@ const Timer = ({duration, onTimeEnd, questionIndex}) => {
         }, 1000)
 
         return () => clearInterval(timer)
-    }, [onTimeEnd])
+    }, [onTimeEnd, questionIndex])
 
     return <p>{timeLeft}</p>;
 }

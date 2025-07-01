@@ -10,7 +10,7 @@ function App() {
   const changeGameMode = mode => {
     setGameMode(mode)
   }
-  console.log(gameMode)
+  
   let gameScreen;
   if (gameMode === 'setGame') gameScreen = <StartScreen changeMode={changeGameMode} setQuizQuestions={setQuestions}/>
   if (gameMode === 'playing') gameScreen = <GameScreen changeMode={changeGameMode} quizQuestions={questions}/>

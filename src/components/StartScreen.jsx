@@ -15,10 +15,9 @@ const StartScreen = ({changeMode, setQuizQuestions}) => {
   const getData = (e) => {
     e.preventDefault();
     fetch(
-      `https://opentdb.com/api.php?axmount=${quizSettings.amount}&category=${quizSettings.category}&difficulty=${quizSettings.difficulty}&type=${quizSettings.type}`
+      `https://opentdb.com/api.php?amount=${quizSettings.amount}&category=${quizSettings.category}&difficulty=${quizSettings.difficulty}&type=${quizSettings.type}`
     )
       .then((res) => {
-        console.log(res)
         if(!res.ok) throw new Error("error fetching data")
         return res.json()
       })
