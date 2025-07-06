@@ -1,12 +1,16 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 const Timer = ({duration, onTimeEnd, questionIndex}) => {
     const [timeLeft, setTimeLeft] = useState(duration);
-
+    const hasRun = useRef(false);
+    
     useEffect(() => {
+        if (hasRun.current) return;
+        hasRun.current = true;
+
         const timer = setInterval(() => {
             setTimeLeft((prev) => {
-                if(prev === 1) {
+                if(prev === 0) {
                     clearInterval(timer);
                     onTimeEnd();
                     return 0;
@@ -16,11 +20,12 @@ const Timer = ({duration, onTimeEnd, questionIndex}) => {
             })
         }, 1000)
 
-        return () => clearInterval(timer)
+        return () => {
+            clearInterval(timer);
+            hasRun.current = false;
+          };
     }, [onTimeEnd, questionIndex])
 
     return <p>{timeLeft}</p>;
 }
 export default Timer
-
-// Muszę naprawić timer,zeby podczas zmiany pytania na następne, timer resetował się do 30 

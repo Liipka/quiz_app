@@ -3,8 +3,6 @@ import { quizCategories } from '../utils/data';
 import brainImage from '../assets/brain.png';
 
 const StartScreen = ({changeMode, setQuizQuestions}) => {
-  const [questions, setQuestions] = useState();
-  const [hasError, setHasError] = useState(false);
   const [quizSettings, setQuizSettings] = useState({
     amount: 5,
     category: 9,
@@ -22,7 +20,6 @@ const StartScreen = ({changeMode, setQuizQuestions}) => {
         return res.json()
       })
       .then((data) => {
-        console.log(data)
         if (!data.results || data.results.length === 0) throw new Error("No questions available")
         setQuizQuestions(data.results)
         changeMode('playing')
