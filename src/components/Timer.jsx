@@ -12,7 +12,7 @@ const Timer = ({duration, onTimeEnd, questionIndex}) => {
             setTimeLeft((prev) => {
                 if(prev === 0) {
                     clearInterval(timer);
-                    onTimeEnd();
+                    setTimeout(() => onTimeEnd(), 0)
                     return 0;
                 }
 

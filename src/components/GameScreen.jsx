@@ -1,28 +1,35 @@
 import { use, useEffect, useState } from "react"
 import Timer from "./Timer";
 
-const GameScreen = ({quizQuestions, changeMode}) => {
+const GameScreen = ({quizQuestions, changeMode, collectAllAnswers}) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [shuffledAnswers, setShuffledAnswers] = useState()
     const [correctAnswers, setCorrectAnswers] = useState([])
+    const [userAnswers, setUserAnswers] = useState([])
 
   const currentQuestion = quizQuestions[currentQuestionIndex];
+  
+  console.log(correctAnswers)
+  console.log(userAnswers)
+  console.log(currentQuestion)
 
   const shuffleAnswers = (currentQuestion) => {
     const allAnswers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers]
     return allAnswers.sort(() => Math.random() - 0.5);
   } 
-  // console.log(currentQuestion)
+  
+  const collectUserAndCorrectAnswer = () => {
+    setUserAnswers(answers => [...answers, selectedAnswer])
+    setCorrectAnswers(answers => [...answers, currentQuestion.correct_answer])
+  }
 
   useEffect(() => {
     if (currentQuestion) {
       const shuffled = shuffleAnswers(currentQuestion);
       setShuffledAnswers(shuffled);
-      // setCorrectAnswers((answers) => [...answers, currentQuestion.correct_answer])
     }
   }, [currentQuestionIndex]);
-   
 
   const decodeHtmlEntities = (str) => {
           const parser = new DOMParser();
@@ -31,19 +38,27 @@ const GameScreen = ({quizQuestions, changeMode}) => {
       }
     
   const changeToNextQuestion = () => {
+    const updatedUserAnswers = [...userAnswers, selectedAnswer];
+    const updatedCorrectAnswers = [...correctAnswers, currentQuestion.correct_answer];
+
     if (currentQuestionIndex < quizQuestions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
       setSelectedAnswer(null);
     } 
-    // console.log('test')
-    setCorrectAnswers((answers) => [...answers, currentQuestion.correct_answer]) 
-    if(currentQuestionIndex + 1 === quizQuestions.length) changeMode('finish')
-  };
-  console.log(correctAnswers)
+    collectUserAndCorrectAnswer()
 
+    if(currentQuestionIndex + 1 === quizQuestions.length) {
+      collectAllAnswers(updatedUserAnswers, updatedCorrectAnswers);
+      changeMode('finish')
+    }
+  };
 
   const handleTimerEnd = () => {
-    changeToNextQuestion()
+    const updatedUserAnswers = [...userAnswers, selectedAnswer];
+    const updatedCorrectAnswers = [...correctAnswers, currentQuestion.correct_answer];
+
+    collectAllAnswers(updatedUserAnswers, updatedCorrectAnswers);
+    changeToNextQuestion();
   }
 
   if (!shuffledAnswers) return <div>Loading...</div>;
@@ -85,7 +100,7 @@ const GameScreen = ({quizQuestions, changeMode}) => {
                 <button className="btn-next navigation-btn" onClick={changeToNextQuestion} disabled={!selectedAnswer}>next</button>}
 
                 {currentQuestionIndex + 1 === quizQuestions.length && 
-                <button className="btn-next navigation-btn" onClick={() => changeMode('finish')} disabled={!selectedAnswer}>finish</button>}
+                <button className="btn-next navigation-btn" onClick={handleTimerEnd} disabled={!selectedAnswer}>finish</button>}
             </div>
         </div>
     </div>

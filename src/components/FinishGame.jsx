@@ -1,6 +1,8 @@
-const FinishGame = () => {
+const FinishGame = ({score}) => {
+
+  console.log(score)
   return (
-    <div>FinishGame</div>
+    <div>Finish</div>
   )
 }
 export default FinishGame
