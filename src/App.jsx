@@ -12,24 +12,37 @@ function App() {
   const changeGameMode = mode => {
     setGameMode(mode)
   }
+
   const returnGameScore = (userAnswers, corectAnswers) => {
-    const points = corectAnswers.filter(element => userAnswers.includes(element)).length;
-    const score = {
-      gamePoints: points,
-      corectAnswers,
-      userAnswers
+
+    let points = 0;
+    for (let i = 0; i < userAnswers.length; i++) {
+      if (userAnswers[i] === corectAnswers[i]) {
+        points++;
+      }
     }
-    console.log('test', score)
-    setGameScore(score)
+
+      const score = {
+        gamePoints: points,
+        corectAnswers,
+        userAnswers
+      }
+      setGameScore(score)
   }
+
+  const decodeHtmlEntities = (str) => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(str, 'text/html');
+      return doc.documentElement.textContent;
+  }
+
 
   let gameScreen;
   if (gameMode === 'setGame') gameScreen = <StartScreen changeMode={changeGameMode} setQuizQuestions={setQuestions}/>
-  if (gameMode === 'playing') gameScreen = <GameScreen changeMode={changeGameMode} quizQuestions={questions} collectAllAnswers={returnGameScore}/>
+  if (gameMode === 'playing') gameScreen = <GameScreen changeMode={changeGameMode} quizQuestions={questions} collectAllAnswers={returnGameScore} decodeText={decodeHtmlEntities}/>
   if (gameMode === 'error') gameScreen = <Error changeMode={changeGameMode} />
-  if (gameMode === 'finish') gameScreen = <FinishGame score={gameScore} />
+  if (gameMode === 'finish') gameScreen = <FinishGame score={gameScore} quizQuestions={questions} decodeText={decodeHtmlEntities}/>
 
-  console.log(gameMode)
   return (
     <div className='main'>
     {gameScreen}

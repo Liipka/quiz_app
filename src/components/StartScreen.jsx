@@ -39,7 +39,7 @@ const StartScreen = ({changeMode, setQuizQuestions}) => {
   return (
     <div className="container">
       <img src={brainImage} alt="brain" className="logo" />
-      <h1>QUIZ MASTER</h1>
+      <h1 className='title'>QUIZ MASTER</h1>
       <form className="form-container" onSubmit={getData}>
         <label className="form-element">
           Select number of questions 1 to 50:

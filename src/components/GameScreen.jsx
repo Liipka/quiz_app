@@ -1,7 +1,7 @@
 import { use, useEffect, useState } from "react"
 import Timer from "./Timer";
 
-const GameScreen = ({quizQuestions, changeMode, collectAllAnswers}) => {
+const GameScreen = ({quizQuestions, changeMode, collectAllAnswers, decodeText}) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [shuffledAnswers, setShuffledAnswers] = useState()
@@ -9,10 +9,6 @@ const GameScreen = ({quizQuestions, changeMode, collectAllAnswers}) => {
     const [userAnswers, setUserAnswers] = useState([])
 
   const currentQuestion = quizQuestions[currentQuestionIndex];
-  
-  console.log(correctAnswers)
-  console.log(userAnswers)
-  console.log(currentQuestion)
 
   const shuffleAnswers = (currentQuestion) => {
     const allAnswers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers]
@@ -73,14 +69,14 @@ const GameScreen = ({quizQuestions, changeMode, collectAllAnswers}) => {
             </div>
             <div className="question-box">
                 <p>
-                    {decodeHtmlEntities(currentQuestion.question)}
+                    {decodeText(currentQuestion.question)}
                 </p>
             </div>
           
             <div className="answers-box">
                 {shuffledAnswers.map((answer, i) => (
                   <label key={i} className="question-answer">
-                    {decodeHtmlEntities(answer)}
+                    {decodeText(answer)}
                     <input 
                     type="radio" 
                     name="group"

@@ -22,6 +22,10 @@
     margin-top: 50px;
 }
 
+.title {
+    font-size: 30px;
+}
+
 .form-container {
     background-color: var(--secondary-bg-color);
     display: flex;
@@ -194,3 +198,7 @@
   }
 
   /* Error styles  end */
+  /* Finish screen start */
+  
+
+  /* Finish screen end */
