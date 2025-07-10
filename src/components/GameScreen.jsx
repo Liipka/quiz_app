@@ -14,7 +14,6 @@ const GameScreen = ({quizQuestions, changeMode, collectAllAnswers, decodeText}) 
     const allAnswers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers]
     return allAnswers.sort(() => Math.random() - 0.5);
   } 
-  
   const collectUserAndCorrectAnswer = () => {
     setUserAnswers(answers => [...answers, selectedAnswer])
     setCorrectAnswers(answers => [...answers, currentQuestion.correct_answer])
@@ -26,35 +25,39 @@ const GameScreen = ({quizQuestions, changeMode, collectAllAnswers, decodeText}) 
       setShuffledAnswers(shuffled);
     }
   }, [currentQuestionIndex]);
-
-  const decodeHtmlEntities = (str) => {
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(str, 'text/html');
-          return doc.documentElement.textContent;
-      }
     
   const changeToNextQuestion = () => {
-    const updatedUserAnswers = [...userAnswers, selectedAnswer];
-    const updatedCorrectAnswers = [...correctAnswers, currentQuestion.correct_answer];
-
+    collectUserAndCorrectAnswer()
     if (currentQuestionIndex < quizQuestions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
       setSelectedAnswer(null);
     } 
-    collectUserAndCorrectAnswer()
 
     if(currentQuestionIndex + 1 === quizQuestions.length) {
+      const updatedUserAnswers = [...userAnswers, selectedAnswer];
+      const updatedCorrectAnswers = [...correctAnswers, currentQuestion.correct_answer];
+
       collectAllAnswers(updatedUserAnswers, updatedCorrectAnswers);
       changeMode('finish')
     }
   };
 
   const handleTimerEnd = () => {
+    const nextIndex = currentQuestionIndex + 1
+    const isLastQuestion = nextIndex === quizQuestions.length
+
     const updatedUserAnswers = [...userAnswers, selectedAnswer];
     const updatedCorrectAnswers = [...correctAnswers, currentQuestion.correct_answer];
-
     collectAllAnswers(updatedUserAnswers, updatedCorrectAnswers);
-    changeToNextQuestion();
+    
+    if (isLastQuestion) {
+      changeMode('finish');
+    } else {
+      setUserAnswers(updatedUserAnswers);
+      setCorrectAnswers(updatedCorrectAnswers);
+      setCurrentQuestionIndex(nextIndex);
+      setSelectedAnswer(null);
+    }
   }
 
   if (!shuffledAnswers) return <div>Loading...</div>;
