@@ -41,7 +41,7 @@ function App() {
   if (gameMode === 'setGame') gameScreen = <StartScreen changeMode={changeGameMode} setQuizQuestions={setQuestions}/>
   if (gameMode === 'playing') gameScreen = <GameScreen changeMode={changeGameMode} quizQuestions={questions} collectAllAnswers={returnGameScore} decodeText={decodeHtmlEntities}/>
   if (gameMode === 'error') gameScreen = <Error changeMode={changeGameMode} />
-  if (gameMode === 'finish') gameScreen = <FinishGame score={gameScore} quizQuestions={questions} decodeText={decodeHtmlEntities}/>
+  if (gameMode === 'finish') gameScreen = <FinishGame changeMode={changeGameMode} score={gameScore} quizQuestions={questions} decodeText={decodeHtmlEntities}/>
 
   return (
     <div className='main'>

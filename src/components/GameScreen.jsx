@@ -67,7 +67,7 @@ const GameScreen = ({quizQuestions, changeMode, collectAllAnswers, decodeText}) 
         <div className='question-container'>
             <div className="loader-container" key={currentQuestionIndex}>
                 <div className="counter"><span>
-                    <Timer key={currentQuestionIndex} duration={5} onTimeEnd={handleTimerEnd} questionIndex={currentQuestionIndex}/>
+                    <Timer key={currentQuestionIndex} duration={30} onTimeEnd={handleTimerEnd} questionIndex={currentQuestionIndex}/> 
                     </span></div>
             </div>
             <div className="question-box">
